@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 url = os.getenv("DATABASE_URL")
-database = os.getenv("DATABASE")
-
 connection = psycopg2.connect(url)
 connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
@@ -20,8 +18,8 @@ def delete_existing_data(cursor):
       CREATE TABLE users (
         user_id SERIAL PRIMARY KEY,
         display_name VARCHAR(40) NOT NULL,
-        joined TIMESTAMP NOT NULL DEFAULT NOW(),
-        last_activity TIMESTAMP NOT NULL DEFAULT NOW()
+        joined VARCHAR(100) NOT NULL DEFAULT NOW(),
+        last_activity VARCHAR(100) NOT NULL DEFAULT NOW()
       );
     """)
     print("Recreated users table")
@@ -33,8 +31,8 @@ def delete_existing_data(cursor):
         blog_post_id SERIAL PRIMARY KEY,
         user_id INTEGER NOT NULL,
         body VARCHAR(2000) NOT NULL,
-        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-        updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        created_at VARCHAR(100) NOT NULL DEFAULT NOW(),
+        updated_at VARCHAR(100) NOT NULL DEFAULT NOW(),
         votes INTEGER NOT NULL DEFAULT 0
       );
     """)
@@ -49,8 +47,8 @@ def delete_existing_data(cursor):
         blog_post_id INTEGER NOT NULL,
         user_id INTEGER NOT NULL,
         body VARCHAR(1000) NOT NULL,
-        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-        updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        created_at VARCHAR(100) NOT NULL DEFAULT NOW(),
+        updated_at VARCHAR(100) NOT NULL DEFAULT NOW(),
         votes INTEGER NOT NULL DEFAULT 0
       )
     """)

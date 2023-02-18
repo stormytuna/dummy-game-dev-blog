@@ -17,7 +17,7 @@ def delete_existing_data(cursor):
     cursor.execute("""
       CREATE TABLE users (
         user_id SERIAL PRIMARY KEY,
-        display_name VARCHAR(40) NOT NULL,
+        username VARCHAR(40) NOT NULL,
         joined VARCHAR(100) NOT NULL DEFAULT NOW(),
         last_activity VARCHAR(100) NOT NULL DEFAULT NOW()
       );
@@ -68,9 +68,9 @@ def insert_test_data(cursor):
     # Users
     for user in users_data:
         cursor.execute("""
-          INSERT INTO users (display_name, joined, last_activity) 
+          INSERT INTO users (username, joined, last_activity) 
           VALUES (%s, %s, %s)
-        """, (user["display_name"], user["joined"], user["last_activity"]))
+        """, (user["username"], user["joined"], user["last_activity"]))
 
     print("Inserted users data")
 

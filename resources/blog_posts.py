@@ -5,9 +5,14 @@ from psycopg2.extras import RealDictCursor
 
 
 class BlogPosts(Resource):
-  # TODO: Make this endpoint return username instead of user id and comment count
     def get(self):
         with connection:
             with connection.cursor(cursor_factory=RealDictCursor) as cursor:
-                cursor.execute("SELECT * FROM blog_posts;")
+                cursor.execute("""
+                  SELECT blog_posts.*, users.username, COUNT(comments.comment_id) as comment_count FROM blog_posts
+                  JOIN users ON blog_posts.user_id = users.user_id
+                  LEFT JOIN comments ON comments.blog_post_id = blog_posts.blog_post_id
+                  GROUP BY blog_posts.blog_post_id, users.username
+                """)
+
                 return {"blog_posts": cursor.fetchall()}

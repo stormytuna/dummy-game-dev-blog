@@ -1,17 +1,17 @@
 {
   "users": [
     {
-      "display_name": "stormytuna",
+      "username": "stormytuna",
       "joined": "2023-02-18T14:03:52+00:00",
       "last_activity": "2023-02-18T14:03:52+00:00"
     },
     {
-      "display_name": "some-random-guy",
+      "username": "some-random-guy",
       "joined": "2023-02-18T14:03:52+00:00",
       "last_activity": "2023-02-18T14:03:52+00:00"
     },
     {
-      "display_name": "vsadbvcihsvis",
+      "username": "vsadbvcihsvis",
       "joined": "2023-02-18T14:03:52+00:00",
       "last_activity": "2023-02-18T14:03:52+00:00"
     }
@@ -23,6 +23,20 @@
       "created_at": "2023-02-18T14:03:52+00:00",
       "updated_at": "2023-02-18T14:03:52+00:00",
       "votes": 5
+    },
+    {
+      "user_id": 1,
+      "body": "Connection terminated. I'm sorry to interrupt you, Elizabeth, if you still even remember that name, But I'm afraid you've been misinformed.",
+      "created_at": "2023-02-18T14:03:52+00:00",
+      "updated_at": "2023-02-18T14:03:52+00:00",
+      "votes": 16
+    },
+    {
+      "user_id": 2,
+      "body": "You don't even realize that you are trapped. Your lust for blood has driven you in endless circles, chasing the cries of children in some unseen chamber, always seeming so near, yet somehow out of reach",
+      "created_at": "2023-02-18T14:03:52+00:00",
+      "updated_at": "2023-02-18T14:03:52+00:00",
+      "votes": 12
     }
   ],
   "comments": [

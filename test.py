@@ -36,6 +36,21 @@ class GetPost(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
+class GetUsersPosts(unittest.TestCase):
+    def test_successful(self):
+        tester = app.test_client(self)
+        response = tester.get("/api/users/1/posts/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"blog_posts" in response.data)
+
+    def test_404(self):
+        tester = app.test_client(self)
+        response = tester.get("/api/users/5000/posts/")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
 
 if __name__ == "__main__":
     unittest.main()

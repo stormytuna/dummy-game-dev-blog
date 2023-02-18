@@ -1,4 +1,4 @@
-from flask import request, abort
+from flask import abort
 from flask_restful import Resource
 from connection import connection
 from psycopg2.extras import RealDictCursor

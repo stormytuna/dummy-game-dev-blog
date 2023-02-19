@@ -1,4 +1,5 @@
 from app import app
+from db.seed import seed
 
 import unittest
 
@@ -36,6 +37,7 @@ class GetPost(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
+
 class GetUsersPosts(unittest.TestCase):
     def test_successful(self):
         tester = app.test_client(self)
@@ -51,34 +53,43 @@ class GetUsersPosts(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
+
 class PostPost(unittest.TestCase):
     def test_successful(self):
         tester = app.test_client(self)
-        response = tester.post("/api/posts/", json={"user_id": 1, "body": "Grahhhh"})
+        response = tester.post(
+            "/api/posts/", json={"user_id": 1, "body": "Grahhhh"})
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"blog_post" in response.data)
 
     def test_404(self):
         tester = app.test_client(self)
-        response = tester.post("/api/posts/", json={"user_id": 5000, "body": "Grahhhh"})
+        response = tester.post(
+            "/api/posts/", json={"user_id": 5000, "body": "Grahhhh"})
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
     def test_400_Malformed_Body(self):
         tester = app.test_client(self)
-        response = tester.post("/api/posts/", json={"vihsiu": 5000, "afkhfk": "Grahhhh"})
+        response = tester.post(
+            "/api/posts/", json={"vihsiu": 5000, "afkhfk": "Grahhhh"})
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
     def test_400_Fails_Schema_Validation(self):
         tester = app.test_client(self)
-        response = tester.post("/api/posts/", json={"user_id": "not-a-number", "body": "Grahhhh"})
+        response = tester.post(
+            "/api/posts/", json={"user_id": "not-a-number", "body": "Grahhhh"})
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
+
+    def tearDown(self) -> None:
+        seed()
+        return super().tearDown()
 
 
 if __name__ == "__main__":

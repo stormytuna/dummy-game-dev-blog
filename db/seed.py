@@ -12,8 +12,10 @@ connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
 
 def delete_existing_data(cursor):
-    # Users
+    cursor.execute("DROP TABLE IF EXISTS blog_posts")
+    cursor.execute("DROP TABLE IF EXISTS comments")
     cursor.execute("DROP TABLE IF EXISTS users;")
+
     cursor.execute("""
       CREATE TABLE users (
         user_id SERIAL PRIMARY KEY,
@@ -22,24 +24,6 @@ def delete_existing_data(cursor):
         last_activity VARCHAR(100) NOT NULL DEFAULT NOW()
       );
     """)
-    print("Recreated users table")
-
-    # Blog posts
-    cursor.execute("DROP TABLE IF EXISTS blog_posts")
-    cursor.execute("""
-      CREATE TABLE blog_posts (
-        blog_post_id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users,
-        body VARCHAR(2000) NOT NULL,
-        created_at VARCHAR(100) NOT NULL DEFAULT NOW(),
-        updated_at VARCHAR(100) NOT NULL DEFAULT NOW(),
-        votes INTEGER NOT NULL DEFAULT 0
-      );
-    """)
-    print("Recreated blog_posts table")
-
-    # Comments
-    cursor.execute("DROP TABLE IF EXISTS comments")
     cursor.execute("""
       CREATE TABLE comments (
         comment_id SERIAL PRIMARY KEY,
@@ -52,7 +36,16 @@ def delete_existing_data(cursor):
         votes INTEGER NOT NULL DEFAULT 0
       )
     """)
-    print("Recreated comments table")
+    cursor.execute("""
+      CREATE TABLE blog_posts (
+        blog_post_id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users ON DELETE CASCADE,
+        body VARCHAR(2000) NOT NULL,
+        created_at VARCHAR(100) NOT NULL DEFAULT NOW(),
+        updated_at VARCHAR(100) NOT NULL DEFAULT NOW(),
+        votes INTEGER NOT NULL DEFAULT 0
+      );
+    """)
 
 
 def insert_test_data(cursor):
@@ -72,8 +65,6 @@ def insert_test_data(cursor):
           VALUES (%s, %s, %s)
         """, (user["username"], user["joined"], user["last_activity"]))
 
-    print("Inserted users data")
-
     # Blog posts
     for blog_post in blog_posts_data:
         cursor.execute("""
@@ -81,16 +72,12 @@ def insert_test_data(cursor):
         VALUES (%s, %s, %s, %s, %s)
       """, (blog_post["user_id"], blog_post["body"], blog_post["created_at"], blog_post["updated_at"], blog_post["votes"]))
 
-    print("Inserted blog_posts data")
-
     # Comments
     for comment in comments_data:
         cursor.execute("""
         INSERT INTO comments (parent_comment_id, blog_post_id, user_id, body, created_at, updated_at, votes)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
       """, (comment["parent_comment_id"], comment["blog_post_id"], comment["user_id"], comment["body"], comment["created_at"], comment["updated_at"], comment["votes"]))
-
-    print("Inserted comments data")
 
 
 def seed():

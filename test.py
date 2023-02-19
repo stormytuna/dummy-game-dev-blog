@@ -92,5 +92,43 @@ class PostPost(unittest.TestCase):
         return super().tearDown()
 
 
+class PatchBlogPostVotes(unittest.TestCase):
+    def test_successful(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/posts/1/votes", json={"vote_increment": 1})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"blog_post" in response.data)
+
+    def test_404(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/posts/5000/votes", json={"vote_increment": 1})
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
+    def test_400_Malformed_Body(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/posts/1/votes", json={"vjnsdifijsnis": 1})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
+    def test_400_Fails_Schema_Validation(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/posts/1/votes", json={"vote_increment": "grahh"})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
+    def tearDown(self) -> None:
+        seed()
+        return super().tearDown()
+
+
 if __name__ == "__main__":
     unittest.main()

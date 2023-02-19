@@ -110,6 +110,28 @@
         "400: 'vote_increment' is not an integer",
         "400: 'vote_increment' does not exist on the sent JSON object"
       ]
+    },
+    "PATCH /api/posts/<int:blog_post_id>/": {
+      "description": "takes a blog_post JSON object, replaces the body with the given body and serves the updated blog_post entry",
+      "example request": {
+        "body": "Something something Game of Thrones good"
+      },
+      "example response": {
+        "blog_post": {
+          "blog_post_id": 1,
+          "user_id": 1,
+          "body": "Something something Game of Thrones good",
+          "created_at": "2023-02-18T14:03:52+00:00",
+          "updated_at": "2023-02-19T14:19:40+00:00",
+          "votes": 5,
+          "username": "stormytuna",
+          "comment_count": 2
+        }
+      },
+      "possible errors": [
+        "404: blog_post with the given blog_post_id does not exist",
+        "400: 'body' does not exist on the sent JSON object"
+      ]
     }
   }
 }

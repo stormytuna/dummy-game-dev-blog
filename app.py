@@ -14,6 +14,14 @@ api = Api(app, errors={
     "UserNotFoundError": {
         "message": "User not found",
         "status": 404
+    },
+    "MalformedBlogPostError": {
+        "message": "Malformed blog post received, ensure your sent request has 'user_id' and 'body' properties",
+        "status": 400
+    },
+    "ForeignKeyViolation": {
+        "message": "Bad request",
+        "status": 400
     }
 })
 

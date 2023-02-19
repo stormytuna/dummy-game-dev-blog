@@ -5,3 +5,6 @@ class BlogPostNotFoundError(HTTPException):
 
 class UserNotFoundError(HTTPException):
     pass
+
+class MalformedBlogPostError(HTTPException):
+    pass

@@ -29,7 +29,7 @@ def delete_existing_data(cursor):
     cursor.execute("""
       CREATE TABLE blog_posts (
         blog_post_id SERIAL PRIMARY KEY,
-        user_id INTEGER NOT NULL,
+        user_id INTEGER REFERENCES users,
         body VARCHAR(2000) NOT NULL,
         created_at VARCHAR(100) NOT NULL DEFAULT NOW(),
         updated_at VARCHAR(100) NOT NULL DEFAULT NOW(),

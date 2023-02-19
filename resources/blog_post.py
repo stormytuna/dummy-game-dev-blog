@@ -45,3 +45,18 @@ class BlogPost(Resource):
                     raise BlogPostNotFoundError
 
                 return {"blog_post": blog_post}
+
+    def delete(self, blog_post_id):
+        with connection:
+            with connection.cursor(cursor_factory=RealDictCursor) as cursor:
+                cursor.execute("""
+                  DELETE FROM blog_posts
+                  WHERE blog_post_id = (%s)
+                  RETURNING *
+                """, (blog_post_id,))
+
+                blog_post = cursor.fetchone()
+                if (blog_post is None):
+                    raise BlogPostNotFoundError
+
+                return {}, 204

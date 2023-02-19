@@ -160,5 +160,26 @@ class PatchBlogPost(unittest.TestCase):
         return super().tearDown()
 
 
+class DeleteBlogPost(unittest.TestCase):
+    def test_successful(self):
+        tester = app.test_client(self)
+        response = tester.delete(
+            "/api/posts/1/")
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.content_type, "application/json")
+
+    def test_404(self):
+        tester = app.test_client(self)
+        response = tester.delete(
+            "/api/posts/5000/")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
+    def tearDown(self) -> None:
+        seed()
+        return super().tearDown()
+
+
 if __name__ == "__main__":
     unittest.main()

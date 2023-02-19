@@ -2,11 +2,13 @@
   "endpoints": {
     "GET /api/": {
       "description": "serves this JSON object, a list of endpoints and HTTP methods used to interact with them",
-      "queries": []
+      "queries": [],
+      "status": 200
     },
     "GET /api/posts/": {
       "description": "serves an array of blog_post entries",
       "queries": [],
+      "status": 200,
       "example response": {
         "blog_posts": [
           {
@@ -26,6 +28,7 @@
     "GET /api/posts/<int:blog_post_id>/": {
       "description": "serves the blog_post entry with the given blog_post_id",
       "queries": [],
+      "status": 200,
       "example response": {
         "blog_post": {
           "blog_post_id": 1,
@@ -45,6 +48,7 @@
     "GET /api/users/<int:user_id>/posts": {
       "description": "serves an array of blog_post entries owned by the user with the given user_id",
       "queries": [],
+      "status": 200,
       "example response": {
         "blog_posts": [
           {
@@ -70,6 +74,7 @@
         "user_id": 1,
         "body": "Development is going smoothly!"
       },
+      "status": 201,
       "example response": {
         "blog_post": {
           "blog_post_id": 1,
@@ -93,6 +98,7 @@
       "example request": {
         "vote_increment": 1
       },
+      "status": 200,
       "example repsonse": {
         "blog_post": {
           "blog_post_id": 1,
@@ -116,6 +122,7 @@
       "example request": {
         "body": "Something something Game of Thrones good"
       },
+      "status": 200,
       "example response": {
         "blog_post": {
           "blog_post_id": 1,
@@ -131,6 +138,13 @@
       "possible errors": [
         "404: blog_post with the given blog_post_id does not exist",
         "400: 'body' does not exist on the sent JSON object"
+      ]
+    },
+    "DELETE /api/posts/<int:blog_post_id>/": {
+      "description": "deletes the blog_post entry with the given blog_post_id",
+      "status": 204,
+      "possible errors": [
+        "404: blog_post with the given blog_post_id does not exist"
       ]
     }
   }

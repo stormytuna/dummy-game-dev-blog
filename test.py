@@ -181,5 +181,23 @@ class DeleteBlogPost(unittest.TestCase):
         return super().tearDown()
 
 
+class GetBlogPostComments(unittest.TestCase):
+    def test_successful(self):
+        tester = app.test_client(self)
+        response = tester.get(
+            "/api/posts/1/comments/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"comments" in response.data)
+
+    def test_404(self):
+        tester = app.test_client(self)
+        response = tester.get(
+            "/api/posts/5000/comments/")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
+
 if __name__ == "__main__":
     unittest.main()

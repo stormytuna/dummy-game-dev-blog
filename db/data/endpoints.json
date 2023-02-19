@@ -1,0 +1,115 @@
+{
+  "endpoints": {
+    "GET /api/": {
+      "description": "serves this JSON object, a list of endpoints and HTTP methods used to interact with them",
+      "queries": []
+    },
+    "GET /api/posts/": {
+      "description": "serves an array of blog_post entries",
+      "queries": [],
+      "example response": {
+        "blog_posts": [
+          {
+            "blog_post_id": 1,
+            "user_id": 1,
+            "body": "Development is going smoothly!",
+            "created_at": "2023-02-18T14:03:52+00:00",
+            "updated_at": "2023-02-18T14:03:52+00:00",
+            "votes": 5,
+            "username": "stormytuna",
+            "comment_count": 2
+          },
+          { "...": "..." }
+        ]
+      }
+    },
+    "GET /api/posts/<int:blog_post_id>/": {
+      "description": "serves the blog_post entry with the given blog_post_id",
+      "queries": [],
+      "example response": {
+        "blog_post": {
+          "blog_post_id": 1,
+          "user_id": 1,
+          "body": "Development is going smoothly!",
+          "created_at": "2023-02-18T14:03:52+00:00",
+          "updated_at": "2023-02-18T14:03:52+00:00",
+          "votes": 5,
+          "username": "stormytuna",
+          "comment_count": 2
+        }
+      },
+      "possible errors": [
+        "404: blog_post with the given blog_post_id does not exist"
+      ]
+    },
+    "GET /api/users/<int:user_id>/posts": {
+      "description": "serves an array of blog_post entries owned by the user with the given user_id",
+      "queries": [],
+      "example response": {
+        "blog_posts": [
+          {
+            "blog_post_id": 1,
+            "user_id": 1,
+            "body": "Development is going smoothly!",
+            "created_at": "2023-02-18T14:03:52+00:00",
+            "updated_at": "2023-02-18T14:03:52+00:00",
+            "votes": 5,
+            "username": "stormytuna",
+            "comment_count": 2
+          },
+          { "...": "..." }
+        ]
+      },
+      "possible errors": [
+        "404: user with the given user_id does not exist"
+      ]
+    },
+    "POST /api/posts/": {
+      "description": "takes a blog_post JSON object and serves the created blog_post entry",
+      "example request": {
+        "user_id": 1,
+        "body": "Development is going smoothly!"
+      },
+      "example response": {
+        "blog_post": {
+          "blog_post_id": 1,
+          "user_id": 1,
+          "body": "Development is going smoothly!",
+          "created_at": "2023-02-18T14:03:52+00:00",
+          "updated_at": "2023-02-18T14:03:52+00:00",
+          "votes": 5,
+          "username": "stormytuna",
+          "comment_count": 2
+        }
+      },
+      "possible errors": [
+        "404: user with the given user_id does not exist",
+        "400: 'user_id' is not an integer or 'body' is not a string",
+        "400: 'user_id' or 'body' do not exist on the sent JSON object"
+      ]
+    },
+    "PATCH /api/posts/<int:blog_post_id>/votes/": {
+      "description": "takes a votes JSON object, adds it to the votes of the given blog_post entry and serves the updated blog_post entry",
+      "example request": {
+        "vote_increment": 1
+      },
+      "example repsonse": {
+        "blog_post": {
+          "blog_post_id": 1,
+          "user_id": 1,
+          "body": "Development is going smoothly!",
+          "created_at": "2023-02-18T14:03:52+00:00",
+          "updated_at": "2023-02-18T14:03:52+00:00",
+          "votes": 6,
+          "username": "stormytuna",
+          "comment_count": 2
+        }
+      },
+      "possible errors": [
+        "404: blog_post with the given blog_post_id does not exist",
+        "400: 'vote_increment' is not an integer",
+        "400: 'vote_increment' does not exist on the sent JSON object"
+      ]
+    }
+  }
+}

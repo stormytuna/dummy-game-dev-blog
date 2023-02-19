@@ -2,6 +2,7 @@ from flask import abort
 from flask_restful import Resource
 from connection import connection
 from psycopg2.extras import RealDictCursor
+from errors import BlogPostNotFoundError
 
 
 class BlogPost(Resource):
@@ -19,6 +20,6 @@ class BlogPost(Resource):
                 # Handle 404s
                 blog_post = cursor.fetchone()
                 if (blog_post is None):
-                    abort(404, f"Blog post with id={blog_post_id} not found")
+                    raise BlogPostNotFoundError
 
                 return {"blog_post": blog_post}

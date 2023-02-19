@@ -2,6 +2,7 @@ from flask import abort
 from flask_restful import Resource
 from connection import connection
 from psycopg2.extras import RealDictCursor
+from errors import UserNotFoundError
 
 
 class UserBlogPosts(Resource):
@@ -15,7 +16,7 @@ class UserBlogPosts(Resource):
                 """, (user_id,))
                 user = cursor.fetchone()
                 if (user is None):
-                    abort(404, f"User with id={user_id} not found")
+                    raise UserNotFoundError
 
                 cursor.execute("""
                   SELECT blog_posts.*, users.username, COUNT(comments.comment_id) as comment_count FROM blog_posts

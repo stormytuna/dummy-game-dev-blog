@@ -51,6 +51,11 @@ class GetUsersPosts(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
+class PostPost(unittest.TestCase):
+    def test_successful(self):
+        tester = app.test_client(self)
+        response = tester.get("/api/posts/1/")
+
 
 if __name__ == "__main__":
     unittest.main()

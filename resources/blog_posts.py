@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, abort
 from flask_restful import Resource
 from connection import connection
 from psycopg2.extras import RealDictCursor
@@ -16,3 +16,4 @@ class BlogPosts(Resource):
                 """)
 
                 return {"blog_posts": cursor.fetchall()}
+                

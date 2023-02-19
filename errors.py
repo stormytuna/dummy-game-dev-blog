@@ -15,3 +15,7 @@ class MalformedBlogPostError(HTTPException):
 
 class MalformedBlogPostVotesError(HTTPException):
     pass
+
+
+class MalformedBlogPostPatchError(HTTPException):
+    pass

@@ -19,3 +19,11 @@ class MalformedBlogPostVotesError(HTTPException):
 
 class MalformedBlogPostPatchError(HTTPException):
     pass
+
+
+class MalformedCommentsPostError(HTTPException):
+    pass
+
+
+class CommentNotFoundError(HTTPException):
+    pass

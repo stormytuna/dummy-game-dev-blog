@@ -33,6 +33,14 @@ api = Api(app, errors={
     "MalformedBlogPostPatchError": {
         "message": "Malformed blog post patch received, ensure your sent request has a 'body:string' property",
         "status": 400
+    },
+    "MalformedCommentsPostError": {
+        "message": "Malformed comments post received, ensure your sent request has 'body:string', 'parent_comment_id:int|null' and 'user_id:int' properties",
+        "status": 400
+    },
+    "CommentNotFoundError": {
+        "message": "Comment not found",
+        "status": 404
     }
 })
 

@@ -199,5 +199,47 @@ class GetBlogPostComments(unittest.TestCase):
         self.assertTrue(b"message" in response.data)
 
 
+class PostComment(unittest.TestCase):
+    def test_successful(self):
+        tester = app.test_client(self)
+        response = tester.post(
+            "/api/posts/1/comments/", json={"body": "Grahhhh", "user_id": 1, "parent_comment_id": None})
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"comment" in response.data)
+
+    def test_404_on_blog_post_id(self):
+        tester = app.test_client(self)
+        response = tester.post(
+            "/api/posts/5000/comments/", json={"body": "Grahhhh", "user_id": 1, "parent_comment_id": None})
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
+    def test_404_on_parent_comment_id(self):
+        tester = app.test_client(self)
+        response = tester.post(
+            "/api/posts/1/comments/", json={"body": "Grahhhh", "user_id": 1, "parent_comment_id": 5000})
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
+    def test_400_malformed_body(self):
+        tester = app.test_client(self)
+        response = tester.post(
+            "/api/posts/1/comments/", json={"bsfacadcva": "Grahhhh", "fsgtdehgfsfdgh": 1, "sdgfsdfvsgssg": None})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
+    def test_400_fails_schema_validation(self):
+        tester = app.test_client(self)
+        response = tester.post(
+            "/api/posts/1/comments/", json={"body": "Grahhhh", "user_id": "vuiagcuy", "parent_comment_id": "gnaicnaiu"})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"comments" in response.data)
+
+
 if __name__ == "__main__":
     unittest.main()

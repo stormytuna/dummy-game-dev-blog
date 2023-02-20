@@ -30,7 +30,7 @@ class GetPost(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"blog_post" in response.data)
 
-    def test_404(self):
+    def test_404_on_blog_post_id(self):
         tester = app.test_client(self)
         response = tester.get("/api/posts/5000/")
         self.assertEqual(response.status_code, 404)
@@ -46,7 +46,7 @@ class GetUsersPosts(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"blog_posts" in response.data)
 
-    def test_404(self):
+    def test_404_on_blog_post_id(self):
         tester = app.test_client(self)
         response = tester.get("/api/users/5000/posts/")
         self.assertEqual(response.status_code, 404)
@@ -63,7 +63,7 @@ class PostPost(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"blog_post" in response.data)
 
-    def test_404(self):
+    def test_404_on_user_id(self):
         tester = app.test_client(self)
         response = tester.post(
             "/api/posts/", json={"user_id": 5000, "body": "Grahhhh"})
@@ -71,7 +71,7 @@ class PostPost(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
-    def test_400_Malformed_Body(self):
+    def test_400_on_malformed_body(self):
         tester = app.test_client(self)
         response = tester.post(
             "/api/posts/", json={"vihsiu": 5000, "afkhfk": "Grahhhh"})
@@ -79,7 +79,7 @@ class PostPost(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
-    def test_400_Fails_Schema_Validation(self):
+    def test_400_on_fails_schema_validation(self):
         tester = app.test_client(self)
         response = tester.post(
             "/api/posts/", json={"user_id": "not-a-number", "body": "Grahhhh"})
@@ -101,7 +101,7 @@ class PatchBlogPostVotes(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"blog_post" in response.data)
 
-    def test_404(self):
+    def test_404_on_blog_post_id(self):
         tester = app.test_client(self)
         response = tester.patch(
             "/api/posts/5000/votes/", json={"vote_increment": 1})
@@ -109,7 +109,7 @@ class PatchBlogPostVotes(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
-    def test_400_Malformed_Body(self):
+    def test_400_on_malformed_body(self):
         tester = app.test_client(self)
         response = tester.patch(
             "/api/posts/1/votes/", json={"vjnsdifijsnis": 1})
@@ -117,7 +117,7 @@ class PatchBlogPostVotes(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
-    def test_400_Fails_Schema_Validation(self):
+    def test_400_on_fails_schema_validation(self):
         tester = app.test_client(self)
         response = tester.patch(
             "/api/posts/1/votes/", json={"vote_increment": "grahh"})
@@ -139,7 +139,7 @@ class PatchBlogPost(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"blog_post" in response.data)
 
-    def test_404(self):
+    def test_404_on_blog_post_id(self):
         tester = app.test_client(self)
         response = tester.patch(
             "/api/posts/5000/", json={"body": "Grahhhhhhh"})
@@ -147,7 +147,7 @@ class PatchBlogPost(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)
 
-    def test_400_Malformed_Body(self):
+    def test_400_on_malformed_body(self):
         tester = app.test_client(self)
         response = tester.patch(
             "/api/posts/1/", json={"vjnsdifijsnis": "Grahhhhhhhh"})
@@ -168,7 +168,7 @@ class DeleteBlogPost(unittest.TestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(response.content_type, "application/json")
 
-    def test_404(self):
+    def test_404_on_blog_post_id(self):
         tester = app.test_client(self)
         response = tester.delete(
             "/api/posts/5000/")
@@ -190,7 +190,7 @@ class GetBlogPostComments(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"comments" in response.data)
 
-    def test_404(self):
+    def test_404_on_blog_post_id(self):
         tester = app.test_client(self)
         response = tester.get(
             "/api/posts/5000/comments/")

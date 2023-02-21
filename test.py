@@ -241,5 +241,39 @@ class PostComment(unittest.TestCase):
         self.assertTrue(b"comments" in response.data)
 
 
+class PatchCommentVotes(unittest.TestCase):
+    def test_successful(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/comments/1/votes/", json={"vote_increment": 1})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"comment" in response.data)
+
+    def test_404_on_comment_id(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/comments/5000/votes/", json={"vote_increment": 1})
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)  
+
+    def test_400_on_malformed_body(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/comments/5000/votes/", json={"eifhwijhfijdj": 1})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)  
+
+    def test_400_on_fails_schema_validation(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/comments/5000/votes/", json={"vote_increment": "grahhhh"})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)  
+
+
 if __name__ == "__main__":
     unittest.main()

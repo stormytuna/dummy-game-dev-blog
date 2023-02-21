@@ -5,6 +5,7 @@ from resources.blog_post import BlogPost
 from resources.user_blog_posts import UserBlogPosts
 from resources.blog_post_votes import BlogPostVotes
 from resources.blog_post_comments import BlogPostComments
+from resources.comment_votes import CommentVotes
 from resources.endpoints import Endpoints
 from errors import *
 
@@ -26,8 +27,8 @@ api = Api(app, errors={
         "message": "Bad request",
         "status": 400
     },
-    "MalformedBlogPostVotesError": {
-        "message": "Malformed blog post votes received, ensure your sent request has a 'vote_increment:integer' property",
+    "MalformedVotesError": {
+        "message": "Malformed vote increment received, ensure your sent request has a 'vote_increment:integer' property",
         "status": 400
     },
     "MalformedBlogPostPatchError": {
@@ -50,3 +51,4 @@ api.add_resource(BlogPost, "/api/posts/<int:blog_post_id>/")
 api.add_resource(UserBlogPosts, "/api/users/<int:user_id>/posts/")
 api.add_resource(BlogPostVotes, "/api/posts/<int:blog_post_id>/votes/")
 api.add_resource(BlogPostComments, "/api/posts/<int:blog_post_id>/comments/")
+api.add_resource(CommentVotes, "/api/comments/<int:comment_id>/votes/")

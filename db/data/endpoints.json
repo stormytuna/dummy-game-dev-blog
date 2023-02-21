@@ -23,7 +23,8 @@
           },
           { "...": "..." }
         ]
-      }
+      },
+      "notes": []
     },
     "GET /api/posts/<int:blog_post_id>/": {
       "description": "serves the blog_post entry with the given blog_post_id",
@@ -43,7 +44,8 @@
       },
       "possible errors": [
         "404: blog_post with the given blog_post_id does not exist"
-      ]
+      ],
+      "notes": []
     },
     "GET /api/users/<int:user_id>/posts": {
       "description": "serves an array of blog_post entries owned by the user with the given user_id",
@@ -66,6 +68,37 @@
       },
       "possible errors": [
         "404: user with the given user_id does not exist"
+      ],
+      "notes": [
+        "This will serve an empty array if the given user hasn't made any posts"
+      ]
+    },
+    "GET /api/posts/<int:blog_post_id>/comments/": {
+      "description": "servers an array of all comments on the given blog_post entry",
+      "queries": [],
+      "status": 200,
+      "example response": {
+        "comments": [
+          {
+            "comment_id": 2,
+            "parent_comment_id": 1,
+            "blog_post_id": 1,
+            "user_id": 1,
+            "body": "Thank you very much :DDDD",
+            "created_at": "2023-02-18T14:03:52+00:00",
+            "updated_at": "2023-02-18T14:03:52+00:00",
+            "votes": 1,
+            "username": "stormytuna"
+          },
+          { "...": "..." }
+        ]
+      },
+      "possible errors": [
+        "404: blog_post with the given blog_post_id does not exist"
+      ],
+      "notes": [
+        "This will serve an empty array if no comments exist on the given blog post",
+        "parent_comment_id can be null or an integer. null means this comment has no parent, it is just a reply to the blog post and not another comment on that blog post"
       ]
     },
     "POST /api/posts/": {
@@ -91,6 +124,36 @@
         "404: user with the given user_id does not exist",
         "400: 'user_id' is not an integer or 'body' is not a string",
         "400: 'user_id' or 'body' do not exist on the sent JSON object"
+      ],
+      "notes": []
+    },
+    "POST /api/posts/<int:blog_post_id>/comments/": {
+      "description": "takes a comment JSON objectm and serves the created comment entry",
+      "example request": {
+        "body": "What an insightful post :D",
+        "parent_comment_id": null,
+        "user_id": 2
+      },
+      "status": 201,
+      "example response": {
+        "comment": {
+          "comment_id": 3,
+          "parent_comment_id": null,
+          "blog_post_id": 1,
+          "user_id": 2,
+          "body": "What an insightful post :D",
+          "created_at": "2023-02-21 00:12:01.707963+00",
+          "updated_at": "2023-02-21 00:12:01.707963+00",
+          "votes": 0
+        }
+      },
+      "possible errors": [
+        "404: blog_post with the given blog_post_id does not exist",
+        "400: 'body' is not a string, 'parent_comment_id' is not an integer or null or 'user_id' is not an integer",
+        "400: 'body', 'parent_comment_id' or 'user_id' do not exist on the sent JSON object"
+      ],
+      "notes": [
+        "parent_comment_id can be null or an integer. null means this comment has no parent, it is just a reply to the blog post and not another comment on that blog post"
       ]
     },
     "PATCH /api/posts/<int:blog_post_id>/votes/": {
@@ -115,7 +178,8 @@
         "404: blog_post with the given blog_post_id does not exist",
         "400: 'vote_increment' is not an integer",
         "400: 'vote_increment' does not exist on the sent JSON object"
-      ]
+      ],
+      "notes": []
     },
     "PATCH /api/posts/<int:blog_post_id>/": {
       "description": "takes a blog_post JSON object, replaces the body with the given body and serves the updated blog_post entry",
@@ -138,14 +202,43 @@
       "possible errors": [
         "404: blog_post with the given blog_post_id does not exist",
         "400: 'body' does not exist on the sent JSON object"
+      ],
+      "notes": [
+        "This will update the updated_at column of the given blog_post entry to the current date and time"
       ]
+    },
+    "PATCH /api/comments/<int:comment_id>/votes/": {
+      "description": "takes a votes JSON object, adds it to the votes of the given comments entry and serves the updated comments entry",
+      "example request": {
+        "vote_increment": 1
+      },
+      "status": 200,
+      "example response": {
+        "comment": {
+          "comment_id": 1,
+          "parent_comment_id": null,
+          "blog_post_id": 1,
+          "user_id": 2,
+          "body": "Glad to hear it :D",
+          "created_at": "2023-02-18T14:03:52+00:00",
+          "updated_at": "2023-02-18T14:03:52+00:00",
+          "votes": 3
+        }
+      },
+      "possible errors": [
+        "404: comment with the given comment_id does not exist",
+        "400: 'vote_increment' is not an integer",
+        "400: 'vote_increment' does not exist on the sent JSON object"
+      ],
+      "notes": []
     },
     "DELETE /api/posts/<int:blog_post_id>/": {
       "description": "deletes the blog_post entry with the given blog_post_id",
       "status": 204,
       "possible errors": [
         "404: blog_post with the given blog_post_id does not exist"
-      ]
+      ],
+      "notes": []
     }
   }
 }

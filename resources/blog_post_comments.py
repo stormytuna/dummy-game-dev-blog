@@ -55,11 +55,11 @@ class BlogPostComments(Resource):
                         if (cursor.fetchone() is None):
                             raise CommentNotFoundError
 
-                        cursor.execute("""
-                        INSERT INTO comments (body, parent_comment_id, user_id, blog_post_id)
-                        VALUES (%s, %s, %s, %s)
-                        RETURNING *
-                        """, (post_data["body"], post_data["parent_comment_id"], post_data["user_id"], blog_post_id))
+                    cursor.execute("""
+                      INSERT INTO comments (body, parent_comment_id, user_id, blog_post_id)
+                      VALUES (%s, %s, %s, %s)
+                      RETURNING *
+                    """, (post_data["body"], post_data["parent_comment_id"], post_data["user_id"], blog_post_id))
 
                 except InvalidTextRepresentation:
                     raise MalformedCommentsPostError

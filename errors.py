@@ -27,3 +27,7 @@ class MalformedCommentsPostError(HTTPException):
 
 class CommentNotFoundError(HTTPException):
     pass
+
+
+class MalformedVotesError(HTTPException):
+    pass

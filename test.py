@@ -240,6 +240,12 @@ class PostComment(unittest.TestCase):
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"comments" in response.data)
 
+    def tearDown(self) -> None:
+        seed()
+        return super().tearDown()
+
+
+
 
 class PatchCommentVotes(unittest.TestCase):
     def test_successful(self):
@@ -273,6 +279,40 @@ class PatchCommentVotes(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content_type, "application/json")
         self.assertTrue(b"message" in response.data)  
+
+    def tearDown(self) -> None:
+        seed()
+        return super().tearDown()
+    
+
+class PatchComment(unittest.TestCase):
+    def test_successful(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/comments/1/", json={"body": "Grahhhhhh"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"comment" in response.data)
+
+    def test_404_on_comment_id(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/comments/5000/", json={"body": "Grahhhhhh"})
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
+    def test_400_on_malformed_body(self):
+        tester = app.test_client(self)
+        response = tester.patch(
+            "/api/comments/1/", json={"cnfdijbwiufwi": "Grahhhhhh"})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content_type, "application/json")
+        self.assertTrue(b"message" in response.data)
+
+    def tearDown(self) -> None:
+        seed()
+        return super().tearDown()
 
 
 if __name__ == "__main__":

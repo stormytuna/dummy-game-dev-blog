@@ -31,3 +31,6 @@ class CommentNotFoundError(HTTPException):
 
 class MalformedVotesError(HTTPException):
     pass
+
+class MalformedCommentPatchError(HTTPException):
+    pass

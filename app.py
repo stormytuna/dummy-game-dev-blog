@@ -6,6 +6,7 @@ from resources.user_blog_posts import UserBlogPosts
 from resources.blog_post_votes import BlogPostVotes
 from resources.blog_post_comments import BlogPostComments
 from resources.comment_votes import CommentVotes
+from resources.comment import Comment
 from resources.endpoints import Endpoints
 from errors import *
 
@@ -42,6 +43,10 @@ api = Api(app, errors={
     "CommentNotFoundError": {
         "message": "Comment not found",
         "status": 404
+    },
+    "MalformedCommentPatchError": {
+        "message": "Malformed comments patch received, ensure your sent object has a 'body:string' property" ,
+        "status": 400
     }
 })
 
@@ -51,4 +56,5 @@ api.add_resource(BlogPost, "/api/posts/<int:blog_post_id>/")
 api.add_resource(UserBlogPosts, "/api/users/<int:user_id>/posts/")
 api.add_resource(BlogPostVotes, "/api/posts/<int:blog_post_id>/votes/")
 api.add_resource(BlogPostComments, "/api/posts/<int:blog_post_id>/comments/")
+api.add_resource(Comment, "/api/comments/<int:comment_id>/")
 api.add_resource(CommentVotes, "/api/comments/<int:comment_id>/votes/")

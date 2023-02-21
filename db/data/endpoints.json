@@ -207,6 +207,32 @@
         "This will update the updated_at column of the given blog_post entry to the current date and time"
       ]
     },
+    "PATCH /api/comments/<int:comment_id>/": {
+      "description": "takes a comment JSON object, replaces the body with the given body and serves the updated comment entry",
+      "example request": {
+        "body": "I agree, Game of Thrones is great!"
+      },
+      "status": 200,
+      "example response": {
+        "comment": {
+          "comment_id": 1,
+          "parent_comment_id": null,
+          "blog_post_id": 1,
+          "user_id": 2,
+          "body": "I agree, Game of Thrones is great!",
+          "created_at": "2023-02-18T14:03:52+00:00",
+          "updated_at": "2023-02-21 01:00:07.091125+00",
+          "votes": 1
+        }
+      },
+      "possible errors": [
+        "404: comment with the given comment_id does not exist",
+        "400: 'body' does not exist on the sent JSON object"
+      ],
+      "notes": [
+        "This will update the updated_at column of the given comment entry to the current date and time"
+      ]
+    },
     "PATCH /api/comments/<int:comment_id>/votes/": {
       "description": "takes a votes JSON object, adds it to the votes of the given comments entry and serves the updated comments entry",
       "example request": {

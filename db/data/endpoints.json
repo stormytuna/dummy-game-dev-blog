@@ -7,7 +7,22 @@
     },
     "GET /api/posts/": {
       "description": "serves an array of blog_post entries",
-      "queries": [],
+      "queries": [
+        {
+          "key": "sort_by",
+          "values": [
+            "created_at", "updated_at", "votes", "comment_count", "username"
+          ],
+          "description": "sorts the served array by the given column"
+        },
+        {
+          "key": "order_by",
+          "values": [
+            "ASC", "DESC"
+          ],
+          "description": "orders the served array ascending or descending"
+        }
+      ],
       "status": 200,
       "example response": {
         "blog_posts": [

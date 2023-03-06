@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 url = os.getenv("DATABASE_URL")
+seed_data = os.getenv("SEED_DATA")
 connection = psycopg2.connect(url)
 connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
@@ -48,11 +49,12 @@ def delete_existing_data(cursor):
     """)
 
 
-def insert_test_data(cursor):
-    with open("./db/data/test.json") as test_data:
-        test_data_contents = test_data.read()
+def insert_data(cursor):
+    data_path = "./db/data/prod.json" if seed_data == "prod" else "./db/data/test.json"
+    with open(data_path) as data:
+        data_contents = data.read()
 
-    parsed_data = json.loads(test_data_contents)
+    parsed_data = json.loads(data_contents)
 
     users_data = parsed_data["users"]
     blog_posts_data = parsed_data["blog_posts"]
@@ -84,7 +86,7 @@ def seed():
     with connection:
         with connection.cursor() as cursor:
             delete_existing_data(cursor)
-            insert_test_data(cursor)
+            insert_data(cursor)
 
 
 def main():
